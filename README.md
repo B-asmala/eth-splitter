@@ -1,23 +1,22 @@
-# ZKsync Hardhat project template
+# Smart Contract for Splitting Ether using ZKsync
 
 This project was scaffolded with [zksync-cli](https://github.com/matter-labs/zksync-cli).
 
-## Project Layout
+I am using my wallet on meta mask & ZKsync Sepolia Testnet for this project.
 
-- `/contracts`: Contains solidity smart contracts.
-- `/deploy`: Scripts for contract deployment and interaction.
-- `/test`: Test files.
-- `hardhat.config.ts`: Configuration settings.
-
-## How to Use
+## Progress
 
 - `npm run compile`: Compiles contracts.
 - `npm run deploy`: Deploys using script `/deploy/deploy.ts`.
-- `npm run interact`: Interacts with the deployed contract using `/deploy/interact.ts`.
-- `npm run test`: Tests the contracts.
-
-Note: Both `npm run deploy` and `npm run interact` are set in the `package.json`. You can also run your files directly, for example: `npx hardhat deploy-zksync --script deploy.ts`
-
+![](images/sc_1.png)
+I'll use this address later for interacting with the contract.
+- Interacting: 
+    - Using getBalance() : `npx zksync-cli contract read --chain "zksync-sepolia" --contract "0x7576edC13B96cEe8B653E036EA87D05A4f7123EA" --method "getBalance()" --output "uint"`
+    ![](images/sc_2.png)
+    - Transfering Ether : `zksync-cli wallet transfer --amount 0.00008 --chain zksync-sepolia --to 0x7576edC13B96cEe8B653E036EA87D05A4f7123EA`
+    ![](images/sc_3.png)
+    View the transaction [here](https://sepolia.explorer.zksync.io/tx/0xa492bb3ad9e2f58c9167be3379f7085928f68bfe0a16279b3dbdd04f60450525)
+- Next : interact.ts
 ### Environment Settings
 
 To keep private keys safe, this project pulls in environment variables from `.env` files. Primarily, it fetches the wallet's private key.
