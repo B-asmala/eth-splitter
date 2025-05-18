@@ -1,19 +1,68 @@
-require("@matterlabs/hardhat-zksync-deploy");
-require("@matterlabs/hardhat-zksync-solc");
+import type { HardhatUserConfig } from "hardhat/config";
 
-module.exports = {
+import "@matterlabs/hardhat-zksync";
+
+import dotenv from "dotenv";
+dotenv.config();
+
+const config: HardhatUserConfig = {
+  defaultNetwork: "ZKsyncEraSepolia",
   networks: {
-    sepolia: {
-      url: "https://sepolia.infura.io/v3/<API_KEY>" // The Ethereum Web3 RPC URL (optional).
-    },
-    zkTestnet: {
-      url: "https://sepolia.era.zksync.dev", // The testnet RPC URL of ZKsync Era network.
-      ethNetwork: "sepolia", // The Ethereum Web3 RPC URL, or the identifier of the network (e.g. `mainnet` or `sepolia`)
+    ZKsyncEraSepolia: {
+      url: "https://sepolia.era.zksync.dev",
+      ethNetwork: "sepolia",
       zksync: true,
-      // ADDITON
-      accounts: ['0xac1e735be8536c6534bb4f17f06f6afc73b2b5ba84ac2cfb12f7461b20c0bbe3', '0x28a574ab2de8a00364d5dd4b07c4f2f574ef7fcc2a86a197f65abaec836d1959'], // The private keys for the accounts used in the deployment process.
-      
-      // Mnemonic used in the deployment process
-    }
+      verifyURL: "https://explorer.sepolia.era.zksync.dev/contract_verification",
+      accounts: process.env.WALLET_PRIVATE_KEY ? [process.env.WALLET_PRIVATE_KEY] : [],
+    },
+    ZKsyncEraMainnet: {
+      url: "https://mainnet.era.zksync.io",
+      ethNetwork: "mainnet",
+      zksync: true,
+      verifyURL: "https://zksync2-mainnet-explorer.zksync.io/contract_verification",
+      accounts: process.env.WALLET_PRIVATE_KEY ? [process.env.WALLET_PRIVATE_KEY] : [],
+    },
+    SophonMainnet: {
+      url: "https://rpc.sophon.xyz",
+      ethNetwork: "mainnet",
+      verifyURL: "https://verification-explorer.sophon.xyz/contract_verification",
+      zksync: true,
+      accounts: process.env.WALLET_PRIVATE_KEY ? [process.env.WALLET_PRIVATE_KEY] : [],
+    },
+    SophonTestnet: {
+      url: "https://rpc.testnet.sophon.xyz",
+      ethNetwork: "sepolia",
+      verifyURL: "https://api-explorer-verify.testnet.sophon.xyz/contract_verification",
+      zksync: true,
+      accounts: process.env.WALLET_PRIVATE_KEY ? [process.env.WALLET_PRIVATE_KEY] : [],
+    },
+    dockerizedNode: {
+      url: "http://localhost:3050",
+      ethNetwork: "http://localhost:8545",
+      zksync: true,
+      accounts: process.env.WALLET_PRIVATE_KEY ? [process.env.WALLET_PRIVATE_KEY] : [],
+    },
+    anvilZKsync: {
+      url: "http://127.0.0.1:8011",
+      ethNetwork: 'http://localhost:8545',
+      zksync: true,
+      accounts: process.env.WALLET_PRIVATE_KEY ? [process.env.WALLET_PRIVATE_KEY] : [],
+    },
+    hardhat: {
+      zksync: true,
+    },
+  },
+  zksolc: {
+    version: "latest",
+    settings: {
+      codegen: 'yul',
+      // find all available options in the official documentation
+      // https://docs.zksync.io/build/tooling/hardhat/hardhat-zksync-solc#configuration
+    },
+  },
+  solidity: {
+    version: "0.8.24",
   },
 };
+
+export default config;
